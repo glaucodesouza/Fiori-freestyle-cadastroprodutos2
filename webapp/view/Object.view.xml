@@ -1,0 +1,47 @@
+<mvc:View
+    controllerName="fiorinet.cadastroprodutos2.controller.Object"
+	xmlns="sap.m"
+	xmlns:mvc="sap.ui.core.mvc"
+	xmlns:f="sap.ui.layout.form"
+	xmlns:core="sap.ui.core">
+	<Page
+ 	title="Produto"
+ 	showNavButton="true"
+ 	navButtonPress=".onNavBack"
+ 	floatingFooter="true">
+        <f:SimpleForm
+            editable="true"
+            layout="ResponsiveGridLayout"
+            title="Produto"
+            labelSpanXL="3"
+            labelSpanL="3"
+            labelSpanM="3"
+            labelSpanS="12"
+            adjustLabelSpan="false"
+            emptySpanXL="4"
+            emptySpanL="4"
+            emptySpanM="4"
+            emptySpanS="0"
+            columnsXL="1"
+            columnsL="1"
+            columnsM="1"
+            singleContainerFullSize="false"
+            >
+
+                <Label text="Codigo" />         <Input id="inpCodigo"       value="{Codigo}"    enabled="false"/>
+                <Label text="Descricao" />      <Input id="inpDescricao"    value="{Descricao}" enabled="false"/>
+                <Label text="Quantidade" />     <Input id="inpKwmeng"       value="{Kwmeng}"    enabled="false"/>
+                <Label text="UM" />             <Input id="inpMeins"        value="{Meins}"     enabled="false"/>
+                <Label text="Preço Unitário" /> <Input id="inpNetpr"        value="{Netpr}"     enabled="false"/>
+                <Label text="Moeda" />          <Input id="inpWaerk"        value="{Waerk}"     enabled="false"/>
+
+        </f:SimpleForm>
+
+            <footer>
+                <OverflowToolbar>
+                    <ToolbarSpacer/>
+                    <Button type="Emphasized"   text="Modificar"    press="onModificar" />
+                </OverflowToolbar>
+            </footer>
+ 	</Page>
+</mvc:View>

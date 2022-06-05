@@ -1,0 +1,48 @@
+<mvc:View
+    controllerName="fiorinet.cadastroprodutos2.controller.Update"
+	xmlns="sap.m"
+	xmlns:mvc="sap.ui.core.mvc"
+	xmlns:f="sap.ui.layout.form"
+	xmlns:core="sap.ui.core">
+	<Page
+ 	title="Modificar Produto"
+ 	showNavButton="true"
+ 	navButtonPress=".onNavBack"
+ 	floatingFooter="true">
+        <f:SimpleForm
+            editable="true"
+            layout="ResponsiveGridLayout"
+            title="Produto"
+            labelSpanXL="3"
+            labelSpanL="3"
+            labelSpanM="3"
+            labelSpanS="12"
+            adjustLabelSpan="false"
+            emptySpanXL="4"
+            emptySpanL="4"
+            emptySpanM="4"
+            emptySpanS="0"
+            columnsXL="1"
+            columnsL="1"
+            columnsM="1"
+            singleContainerFullSize="false"
+            >
+
+                <Label text="Codigo" />         <Text id="inpCodigo"        text="{Codigo}"/>
+                <Label text="Descricao" />      <Input id="inpDescricao"    value="{Descricao}" />
+                <Label text="Quantidade" />     <Input id="inpKwmeng"       value="{Kwmeng}"/>
+                <Label text="UM" />             <Input id="inpMeins"        value="{Meins}"/>
+                <Label text="Preço Unitário" /> <Input id="inpNetpr"        value="{Netpr}"/>
+                <Label text="Moeda" />          <Input id="inpWaerk"        value="{Waerk}"/>
+
+        </f:SimpleForm>
+
+            <footer>
+                <OverflowToolbar>
+                    <ToolbarSpacer/>
+                    <Button type="Accept" text="Gravar" press="onGravar" />
+                    <Button type="Reject" text="Cancelar" press="onCancelar "/>
+                </OverflowToolbar>
+            </footer>
+ 	</Page>
+</mvc:View>
