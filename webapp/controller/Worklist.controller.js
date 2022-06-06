@@ -100,12 +100,14 @@ sap.ui.define([
             });
         },
         onDeletarMuitos: function(){
-            
+            //--------------------------------------------------
+            // Deleção em massa
+            // Com uso de batch request
+            // Deletar todos os registros marcados na tela
+            //--------------------------------------------------
                 var oTable = this.byId("table");
                 var aItens = oTable.getSelectedContextPaths();
-                //trecho comentado porém mantido, para comparação
-                //var oItem = oEvent.getParameter("listItem"),
-                //sPath = oItem.getBindingContext().getPath();
+
                 for(var i = 0; i<aItens.length;i++ ){
                     //this.getView().getModel().remove(sPath,{
                     this.getView().getModel().remove(aItens[i],{
@@ -116,21 +118,7 @@ sap.ui.define([
                     error: function(e){
                         console.log("Erro ao deletar");
                     }.bind(this),
-                });
-
-                //Teste 1
-                // var oList = this.getView().byId("table");
-                // var oBinding = oList.getBinding("items"); 
-                // var items = oList.getSelectedItems(); 
-                // oModel.remove("/Z270CADPRODUTOSSet(" + parseInt(obj.Codigo) + ")", {
-                //     success: function(){
-                //         // sap.m.MessageToast.show('Produto eliminado com sucesso !');
-                //         oModel.refresh();
-                //     }.bind(this),
-                //     error: function(e){
-                //         //console.error(e);
-                //     }.bind(this)
-                // });                
+                });         
             }
         },
 
