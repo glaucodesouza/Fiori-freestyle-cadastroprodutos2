@@ -8,7 +8,7 @@ sap.ui.define([
     // shortcut for sap.m.URLHelper
     var URLHelper = mobileLibrary.URLHelper;
 
-    return Controller.extend("fiorinet.cadastroprodutos2.controller.BaseController", {
+    return Controller.extend("fiorinet.cadastroprodutos3.controller.BaseController", {
         /**
          * Convenience method for accessing the router.
          * @public

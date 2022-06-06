@@ -2,7 +2,7 @@
     "_version": "1.32.0",
 
     "sap.app": {
-        "id": "fiorinet.cadastroprodutos2",
+        "id": "fiorinet.cadastroprodutos3",
         "type": "application",
         "i18n": "i18n/i18n.properties",
         "applicationVersion": {
@@ -59,7 +59,7 @@
             "i18n": {
                 "type": "sap.ui.model.resource.ResourceModel",
                 "settings": {
-                    "bundleName": "fiorinet.cadastroprodutos2.i18n.i18n"
+                    "bundleName": "fiorinet.cadastroprodutos3.i18n.i18n"
                 }
             },
             "": {
@@ -78,7 +78,7 @@
             "config": {
                 "routerClass": "sap.m.routing.Router",
                 "viewType": "XML",
-                "viewPath": "fiorinet.cadastroprodutos2.view",
+                "viewPath": "fiorinet.cadastroprodutos3.view",
                 "controlId": "app",
                 "controlAggregation": "pages",
                 "bypassed": {
@@ -144,7 +144,7 @@
             }
         },
         "rootView": {
-            "viewName": "fiorinet.cadastroprodutos2.view.App",
+            "viewName": "fiorinet.cadastroprodutos3.view.App",
             "type": "XML",
             "async": true,
             "id": "app"

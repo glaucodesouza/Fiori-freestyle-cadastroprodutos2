@@ -1,7 +1,7 @@
 /*global QUnit*/
 
 sap.ui.define([
-	"fiorinet/cadastroprodutos2/model/formatter"
+	"fiorinet/cadastroprodutos3/model/formatter"
 ], function (formatter) {
 	"use strict";
 

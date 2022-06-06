@@ -3,7 +3,7 @@ sap.ui.define([
 ], function (BaseController) {
     "use strict";
 
-    return BaseController.extend("fiorinet.cadastroprodutos2.controller.App", {
+    return BaseController.extend("fiorinet.cadastroprodutos3.controller.App", {
 
         onInit : function () {
             // apply content density mode to root view

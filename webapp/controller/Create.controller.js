@@ -7,7 +7,7 @@ sap.ui.define([
         "sap/ui/core/UIComponent"
     ], function (BaseController, JSONModel, formatter, History, MessageToast, UIComponent) {
         "use strict";
-        return BaseController.extend("fiorinet.cadastroprodutos2.controller.Create", {
+        return BaseController.extend("fiorinet.cadastroprodutos3.controller.Create", {
          formatter: formatter, 
 
             onInit: function () {

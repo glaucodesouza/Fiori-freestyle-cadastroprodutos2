@@ -1,5 +1,5 @@
 <mvc:View
-    controllerName="fiorinet.cadastroprodutos2.controller.Object"
+    controllerName="fiorinet.cadastroprodutos3.controller.Object"
 	xmlns="sap.m"
 	xmlns:mvc="sap.ui.core.mvc"
 	xmlns:f="sap.ui.layout.form"

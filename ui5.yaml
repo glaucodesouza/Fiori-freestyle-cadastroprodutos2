@@ -2,7 +2,7 @@
 
 specVersion: "2.5"
 metadata:
-  name: fiorinet.cadastroprodutos2
+  name: fiorinet.cadastroprodutos3
 type: application
 server:
   customMiddleware:
@@ -29,4 +29,4 @@ server:
     - name: fiori-tools-preview
       afterMiddleware: fiori-tools-appreload
       configuration:
-        component: fiorinet.cadastroprodutos2
+        component: fiorinet.cadastroprodutos3

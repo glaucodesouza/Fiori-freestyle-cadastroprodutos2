@@ -3,7 +3,7 @@ sap.ui.define([
 ], function (BaseController) {
     "use strict";
 
-    return BaseController.extend("fiorinet.cadastroprodutos2.controller.NotFound", {
+    return BaseController.extend("fiorinet.cadastroprodutos3.controller.NotFound", {
 
         /**
          * Navigates to the worklist when the link is pressed
