@@ -100,25 +100,37 @@ sap.ui.define([
             });
         },
         onDeletarMuitos: function(){
-            var oList = this.getView().byId("table");
-            var oBinding = oList.getBinding("items"); 
-            var items = oList.getSelectedItems(); 
             
-            for (var i = 0; i < items.length; i++) {
-                var item = items[i]; 
-                var context = item.getBindingContext(); 
-                var obj = context.getProperty(null, context); 
-                var that = this; 
-                var oModel = that.getOwnerComponent().getModel();
-                oModel.remove("/Z270CADPRODUTOSSet(" + parseInt(obj.Codigo) + ")", {
+                var oTable = this.byId("table");
+                var aItens = oTable.getSelectedContextPaths();
+                //trecho comentado porém mantido, para comparação
+                //var oItem = oEvent.getParameter("listItem"),
+                //sPath = oItem.getBindingContext().getPath();
+                for(var i = 0; i<aItens.length;i++ ){
+                    //this.getView().getModel().remove(sPath,{
+                    this.getView().getModel().remove(aItens[i],{
                     success: function(){
-                        // sap.m.MessageToast.show('Produto eliminado com sucesso !');
-                        oModel.refresh();
+                        //MessageToast.show('Produto eliminado com sucesso.');
+                        console.log("Deletados com Sucesso!");
                     }.bind(this),
                     error: function(e){
-                        //console.error(e);
-                    }.bind(this)
-                });                
+                        console.log("Erro ao deletar");
+                    }.bind(this),
+                });
+
+                //Teste 1
+                // var oList = this.getView().byId("table");
+                // var oBinding = oList.getBinding("items"); 
+                // var items = oList.getSelectedItems(); 
+                // oModel.remove("/Z270CADPRODUTOSSet(" + parseInt(obj.Codigo) + ")", {
+                //     success: function(){
+                //         // sap.m.MessageToast.show('Produto eliminado com sucesso !');
+                //         oModel.refresh();
+                //     }.bind(this),
+                //     error: function(e){
+                //         //console.error(e);
+                //     }.bind(this)
+                // });                
             }
         },
 
