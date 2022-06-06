@@ -86,7 +86,7 @@
                             <Text text="{Descricao}"/>
                             <ObjectNumber number="{
                                     path: 'Kwmeng',
-                                    formatter: '.formatter.Decimal'
+                                    formatter: '.formatter.numberUnit'
                                 }"
                                 unit="{Meins}" />
                             <ObjectNumber number="{

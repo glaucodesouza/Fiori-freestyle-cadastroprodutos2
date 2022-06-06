@@ -34,7 +34,7 @@ sap.ui.define([
             });
             this.setModel(oViewModel, "worklistView");
 
-        },
+        }, 
 
 		/* =========================================================== */
 		/* metodos customizados                                        */

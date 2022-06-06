@@ -13,25 +13,29 @@ sap.ui.define([
             onInit: function () {
                 var oRouter = sap.ui.core.UIComponent.getRouterFor(this);
                 oRouter.getRoute("create").attachPatternMatched(this._onCreateMatched, this);
+
+                // // setting en as default to simulate browser settings
+                // let configuration = sap.ui.getCore().getConfiguration();
+                // configuration.setFormatLocale("pt_BR");      
             },
                 
-                _onCreateMatched: function (oEvent) {
-                    var m = this.getView().getModel();
-                    m.metadataLoaded().then(function(){
-                    var oContext = m.createEntry('/Z270CADPRODUTOSSet',{
-                            properties: {
-                                Descricao: '',
-                                Kwmeng: '0.00',
-                                Meins: '',
-                                Netpr: '0.00',
-                                Waerk: ''
-                            }
-                        });
-                    this.getView().bindElement({
-                        path: oContext.getPath()
-                        //model: "",
+            _onCreateMatched: function (oEvent) {
+                var m = this.getView().getModel();
+                m.metadataLoaded().then(function(){
+                var oContext = m.createEntry('/Z270CADPRODUTOSSet',{
+                        properties: {
+                            Descricao: '',
+                            Kwmeng: '0.00',
+                            Meins: '',
+                            Netpr: '0.00',
+                            Waerk: ''
+                        }
                     });
-                    }.bind(this));
+                this.getView().bindElement({
+                    path: oContext.getPath()
+                    //model: "",
+                });
+                }.bind(this));
             },
 
             onNavBack: function () {
@@ -60,6 +64,10 @@ sap.ui.define([
     
             },
 
+            parseFloatExternoBrasileiro(string){
+                
+            },
+
             onGravar:function(){
               
                 var oModel = this.getView().getModel();
@@ -67,16 +75,15 @@ sap.ui.define([
                 var dados = {
                  // Codigo:     this.byId("inpCodigo").getValue(),
                     Descricao:  this.byId("inpDescricao").getValue(),
-                    Kwmeng:     parseFloat(this.byId("inpKwmeng").getValue()),
+                    Kwmeng:     parseFloat(this.byId("inpKwmeng").getValue().replaceAll(',', '.')).toPrecision(3),
                     Meins:      this.byId("inpMeins").getValue(),
-                    Netpr:      parseFloat(this.byId("inpNetpr").getValue()),
+                    Netpr:      parseFloat(this.byId("inpNetpr").getValue().replaceAll(',', '.')).toPrecision(3),
                     Waerk:      this.byId("inpWaerk").getValue()
                 };
 
                 //FORMA 1 de Criaçãocom  método oData
                 oModel.create("/Z270CADPRODUTOSSet", dados, {
                     success: function(dados, resposta){      
-                        debugger;                  
                         sap.m.MessageToast.show('Produto criado com sucesso !');                        
                         // var mensagem = JSON.parse(resposta.headers["sap-message"]);
                         // teste 2
@@ -92,7 +99,6 @@ sap.ui.define([
 
                     }.bind(this),
                     error: function(e){
-                        debugger;
                         console.log(e);
                         //sap.m.MessageToast.show('Erro ao Criar !');
                     }.bind(this)
