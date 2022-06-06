@@ -19,7 +19,7 @@ sap.ui.define([
          * Called when the worklist controller is instantiated.
          * @public
          */
-        onInit : function () {
+        onInit : function () { 
             var oViewModel;
 
             // keeps the search state

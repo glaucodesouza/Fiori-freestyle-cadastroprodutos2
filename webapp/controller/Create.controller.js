@@ -15,7 +15,7 @@ sap.ui.define([
                 oRouter.getRoute("create").attachPatternMatched(this._onCreateMatched, this);
 
                 //MODEL p/ iniciar valors
-                var oViewModel = new JSONModel({
+                var oViewModel = new JSONModel({ 
                     Codigo: 0,
                     Descricao: '',
                     Kwmeng: '0.000',
