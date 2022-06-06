@@ -1,0 +1,14 @@
+  METHOD changeset_begin.
+*    DATA ls_operation_info LIKE LINE OF it_operation_info.
+
+** set cv_defer_mode as TRUE to call changeset_process method
+*    LOOP AT it_operation_info INTO ls_operation_info.
+*      IF ls_operation_info-content_id IS NOT INITIAL OR
+*         ls_operation_info-content_id_ref IS NOT INITIAL.
+*        cv_defer_mode = abap_true.
+*      ENDIF.
+*    ENDLOOP.
+
+    cv_defer_mode = abap_true.
+
+  ENDMETHOD.

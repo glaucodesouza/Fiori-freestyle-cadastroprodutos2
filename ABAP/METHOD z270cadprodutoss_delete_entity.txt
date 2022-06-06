@@ -1,0 +1,11 @@
+  METHOD z270cadprodutoss_delete_entity.
+    DATA: ls_keys TYPE zcl_z270cadprodutos_mpc=>ts_z270cadprodutos.
+
+    io_tech_request_context->get_converted_keys(
+    IMPORTING
+      es_key_values = ls_keys ).
+
+    DELETE FROM z270cadprodutos
+     WHERE codigo = ls_keys-codigo.
+
+  ENDMETHOD.

@@ -1,0 +1,144 @@
+  METHOD /iwbep/if_mgw_appl_srv_runtime~execute_action.
+
+    DATA: ls_entity  TYPE zcl_z270cadprodutos_mpc=>ts_z270cadprodutos,
+          ls_produto TYPE z270cadprodutos,
+          lv_status  TYPE sap_bool.
+
+    DATA(ls_header) = io_tech_request_context->get_request_headers( ).
+
+    " Mensagem
+    DATA(lv_container) = mo_context->get_message_container( ).
+
+    CASE iv_action_name.
+      WHEN 'aprovar_produto'.
+
+        io_tech_request_context->get_converted_parameters(
+        IMPORTING
+          es_parameter_values = ls_entity
+        ).
+
+        " ERRO
+        IF ls_entity IS INITIAL.
+          " ERRO. Sair.
+          lv_container->add_message_text_only(
+            EXPORTING
+              iv_msg_type               = 'E'
+              iv_msg_text               = 'Erro da leitura do Entity !'
+          ).
+          RETURN.
+***      RAISE EXCEPTION TYPE /iwbep/cx_mgw_busi_exception
+***        EXPORTING
+***          message_container = lv_container.
+        ENDIF.
+
+        SELECT SINGLE * FROM z270cadprodutos INTO ls_produto WHERE codigo EQ ls_entity-codigo.
+        " ERRO
+        IF sy-subrc <> 0.
+          " ERRO. Sair.
+          lv_container->add_message_text_only(
+            EXPORTING
+              iv_msg_type               = 'E'
+              iv_msg_text               = 'Erro. Produto não localizado p/ aprovação !'
+          ).
+          RETURN.
+***      RAISE EXCEPTION TYPE /iwbep/cx_mgw_busi_exception
+***        EXPORTING
+***          message_container = lv_container.
+        ENDIF.
+
+        IF ls_produto-aprovado = ''.
+          ls_produto-aprovado = 'X'.
+        ELSE.
+          ls_produto-aprovado = ''.
+        ENDIF.
+
+        UPDATE z270cadprodutos
+           SET aprovado = ls_produto-aprovado
+          WHERE codigo = ls_produto-codigo.
+        IF sy-subrc <> 0.
+          " ERRO. Sair.
+          lv_container->add_message_text_only(
+            EXPORTING
+              iv_msg_type               = 'E'
+              iv_msg_text               = 'Erro. Produto já existe !'
+          ).
+          RETURN.
+***      RAISE EXCEPTION TYPE /iwbep/cx_mgw_busi_exception
+***        EXPORTING
+***          message_container = lv_container.
+        ENDIF.
+
+        "DEVOLVE DADOS ATUALIZADOS PARA FRONT END
+        MOVE-CORRESPONDING ls_produto TO ls_entity.
+
+        copy_data_to_ref(
+        EXPORTING
+          is_data = ls_entity
+          CHANGING
+            cr_data = er_data
+        ).
+
+
+      WHEN 'deletar_produto'.
+        io_tech_request_context->get_converted_parameters(
+        IMPORTING
+          es_parameter_values = ls_entity
+        ).
+
+        " ERRO
+        IF ls_entity IS INITIAL.
+          " ERRO. Sair.
+          lv_container->add_message_text_only(
+            EXPORTING
+              iv_msg_type               = 'E'
+              iv_msg_text               = 'Erro da leitura do Entity !'
+          ).
+          RETURN.
+***      RAISE EXCEPTION TYPE /iwbep/cx_mgw_busi_exception
+***        EXPORTING
+***          message_container = lv_container.
+        ENDIF.
+
+        SELECT SINGLE * FROM z270cadprodutos INTO ls_produto WHERE codigo EQ ls_entity-codigo.
+        " ERRO
+        IF sy-subrc <> 0.
+          " ERRO. Sair.
+          lv_container->add_message_text_only(
+            EXPORTING
+              iv_msg_type               = 'E'
+              iv_msg_text               = 'Erro. Produto não localizado p/ deleção !'
+          ).
+          RETURN.
+***      RAISE EXCEPTION TYPE /iwbep/cx_mgw_busi_exception
+***        EXPORTING
+***          message_container = lv_container.
+        ENDIF.
+
+        DELETE z270cadprodutos FROM ls_produto.
+        IF sy-subrc <> 0.
+          " ERRO. Sair.
+          lv_container->add_message_text_only(
+            EXPORTING
+              iv_msg_type               = 'E'
+              iv_msg_text               = 'Erro!'
+          ).
+          RETURN.
+***      RAISE EXCEPTION TYPE /iwbep/cx_mgw_busi_exception
+***        EXPORTING
+***          message_container = lv_container.
+        ENDIF.
+
+        "DEVOLVE DADOS ATUALIZADOS PARA FRONT END
+        MOVE-CORRESPONDING ls_produto TO ls_entity.
+
+        copy_data_to_ref(
+        EXPORTING
+          is_data = ls_entity
+          CHANGING
+            cr_data = er_data
+        ).
+
+      WHEN OTHERS.
+    ENDCASE.
+
+  ENDMETHOD.

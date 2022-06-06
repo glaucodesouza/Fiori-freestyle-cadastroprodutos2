@@ -1,0 +1,69 @@
+Classe ZCL_Z270CADPRODUTOS_DPC_EXT
+  METHOD z270cadprodutoss_create_entity.
+
+    DATA: ls_cadprodutos TYPE z270cadprodutos.
+
+    " Mensagem
+    DATA(lv_container) = mo_context->get_message_container( ).
+
+    io_data_provider->read_entry_data(
+      IMPORTING
+        es_data = er_entity
+    ).
+*    CATCH /iwbep/cx_mgw_tech_exception.
+
+    MOVE-CORRESPONDING er_entity TO ls_cadprodutos.
+
+    SELECT MAX( codigo ) FROM z270cadprodutos INTO ls_cadprodutos-codigo.
+    ADD 1 TO ls_cadprodutos-codigo.
+
+    " Validar cadastro repetido
+    SELECT COUNT( * )
+      FROM z270cadprodutos
+      WHERE descricao = ls_cadprodutos-descricao.
+    IF sy-subrc = 0.
+      " ERRO. Sair.
+      lv_container->add_message_text_only(
+        EXPORTING
+          iv_msg_type               = 'E'
+          iv_msg_text               = 'Erro. Produto já existe !'
+      ).
+      RETURN.
+***      RAISE EXCEPTION TYPE /iwbep/cx_mgw_busi_exception
+***        EXPORTING
+***          message_container = lv_container.
+    ENDIF.
+
+    IF ls_cadprodutos-meins = ''.
+      ls_cadprodutos-meins = 'KG'.
+    ENDIF.
+    IF ls_cadprodutos-waerk = ''.
+      ls_cadprodutos-waerk = 'BRL'.
+    ENDIF.
+
+    INSERT z270cadprodutos FROM ls_cadprodutos.
+
+    IF sy-subrc = 0.
+      er_entity-codigo = ls_cadprodutos-codigo.
+
+      lv_container->add_message_text_only(
+        EXPORTING
+          iv_msg_type               = 'S'
+          iv_msg_text               = 'Criado com sucessagem !'
+      ).
+
+    ELSE.
+      lv_container->add_message_text_only(
+        EXPORTING
+          iv_msg_type               = 'E'
+          iv_msg_text               = 'Erro !'
+      ).
+
+*      RAISE EXCEPTION TYPE /iwbep/cx_mgw_busi_exception
+*        EXPORTING
+*          message_container = lv_container.
+    ENDIF.
+
+
+
+  ENDMETHOD.

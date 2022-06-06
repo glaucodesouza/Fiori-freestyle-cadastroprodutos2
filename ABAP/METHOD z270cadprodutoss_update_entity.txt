@@ -1,0 +1,51 @@
+  METHOD z270cadprodutoss_update_entity.
+
+    DATA(lv_container) = mo_context->get_message_container( ). "tratamento de mensagens
+    DATA: ls_cadprodutos TYPE z270cadprodutos.
+
+    "DADOS DA SOLICITAÇÃO
+    io_data_provider->read_entry_data(
+    IMPORTING
+    es_data = er_entity
+    ).
+
+    "CAMPOS CHAVE
+    DATA: ls_entity TYPE zcl_z270cadprodutos_mpc=>ts_z270cadprodutos.
+
+    io_tech_request_context->get_converted_keys(
+    IMPORTING
+      es_key_values = ls_entity
+      ).
+
+    MOVE-CORRESPONDING er_entity TO ls_cadprodutos.
+
+    ls_cadprodutos-codigo = ls_entity-codigo.
+
+    IF ls_cadprodutos-meins = ''.
+      ls_cadprodutos-meins = 'KG'.
+    ENDIF.
+    IF ls_cadprodutos-waerk = ''.
+      ls_cadprodutos-waerk = 'BRL'.
+    ENDIF.
+
+    MODIFY z270cadprodutos FROM ls_cadprodutos.
+
+    IF sy-subrc = 0.
+      er_entity-codigo = ls_cadprodutos-codigo.
+
+      lv_container->add_message_text_only(
+        EXPORTING
+          iv_msg_type               = 'S'
+          iv_msg_text               = 'Criado com sucessagem !'
+      ).
+
+    ELSE.
+      lv_container->add_message_text_only(
+        EXPORTING
+          iv_msg_type               = 'N'
+          iv_msg_text               = 'Erro !'
+          iv_add_to_response_header = 'X'
+      ).
+    ENDIF.
+
+  ENDMETHOD.
