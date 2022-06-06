@@ -214,11 +214,55 @@ sap.ui.define([
                 var sQuery = oEvent.getParameter("query");
 
                 if (sQuery && sQuery.length > 0) {
-                    aTableSearchState = [new Filter("Codigo", FilterOperator.Contains, sQuery)];
+                    aTableSearchState = [new Filter("Codigo", FilterOperator.Contains, sQuery)
+                                        ];
                 }
                 this._applySearch(aTableSearchState);
             }
 
+        },
+
+        onSearch2 : function (oEvent) {
+			
+            var aTableSearchState = [];
+            var sQuery = oEvent.getParameter("query");
+
+            // if (sQuery && sQuery.length > 0) {
+            //     aTableSearchState = [
+            //         //new Filter("Codigo", FilterOperator.Contains, sQuery),
+            //         new Filter("Descricao", FilterOperator.Contains, sQuery)
+            //     ];
+
+            //     var table = this.byId("table");
+            //     var itens = table.getBinding("items");
+            //     itens.filter(aTableSearchState);
+            // }
+
+            if (oEvent.getParameters().refreshButtonPressed) {
+                // Search field's 'refresh' button has been pressed.
+                // This is visible if you select any main list item.
+                // In this case no new search is triggered, we only
+                // refresh the list binding.
+                this.onRefresh();
+            } else if (!sQuery) {
+                aTableSearchState = [
+                    //new Filter("Codigo", FilterOperator.Contains, sQuery),
+                    new Filter("Descricao", FilterOperator.Contains, sQuery)
+                ];
+
+                var table = this.byId("table");
+                var itens = table.getBinding("items");
+                itens.filter(aTableSearchState);
+            } else if (sQuery && sQuery.length > 0) {
+                aTableSearchState = [
+                    //new Filter("Codigo", FilterOperator.Contains, sQuery),
+                    new Filter("Descricao", FilterOperator.Contains, sQuery)
+                ];
+
+                var table = this.byId("table");
+                var itens = table.getBinding("items");
+                itens.filter(aTableSearchState);
+            }
         },
 
         /**

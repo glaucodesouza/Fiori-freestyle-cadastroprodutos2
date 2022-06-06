@@ -14,9 +14,23 @@ sap.ui.define([
                 var oRouter = sap.ui.core.UIComponent.getRouterFor(this);
                 oRouter.getRoute("create").attachPatternMatched(this._onCreateMatched, this);
 
-                // // setting en as default to simulate browser settings
-                // let configuration = sap.ui.getCore().getConfiguration();
-                // configuration.setFormatLocale("pt_BR");      
+                //MODEL p/ iniciar valors
+                var oViewModel = new JSONModel({
+                    Codigo: 0,
+                    Descricao: '',
+                    Kwmeng: '0.000',
+                    Meins: 'KG',
+                    Netpr: '0.00',
+                    Waerk: 'BRL'
+                });
+                this.getView().setModel(oViewModel, "view");
+
+                // MENSAGENS
+                //Inicializar Controle de mensagens no controller da View atual
+                var oView = this.getView();
+                //registrar a view no message manager
+                sap.ui.getCore().getMessageManager().registerObject(oView,true);
+
             },
                 
             _onCreateMatched: function (oEvent) {
@@ -75,7 +89,7 @@ sap.ui.define([
                 var dados = {
                  // Codigo:     this.byId("inpCodigo").getValue(),
                     Descricao:  this.byId("inpDescricao").getValue(),
-                    Kwmeng:     parseFloat(this.byId("inpKwmeng").getValue().replaceAll(',', '.')).toPrecision(3),
+                    Kwmeng:     parseFloat(this.byId("inpKwmeng").getValue().replaceAll(',', '.')).toPrecision(4),
                     Meins:      this.byId("inpMeins").getValue(),
                     Netpr:      parseFloat(this.byId("inpNetpr").getValue().replaceAll(',', '.')).toPrecision(3),
                     Waerk:      this.byId("inpWaerk").getValue()
@@ -85,12 +99,6 @@ sap.ui.define([
                 oModel.create("/Z270CADPRODUTOSSet", dados, {
                     success: function(dados, resposta){      
                         sap.m.MessageToast.show('Produto criado com sucesso !');                        
-                        // var mensagem = JSON.parse(resposta.headers["sap-message"]);
-                        // teste 2
-                        // this.getRouter().navTo("object", {
-                        //     objectId: dados.Codigo,                            
-                        // });
-
                         //teste 1
                         this.onNavBack();                        
 
@@ -108,7 +116,7 @@ sap.ui.define([
 
             onCancelar: function (oEvent) {
                 this.onNavBack();
-                },
+            },
 
 
 

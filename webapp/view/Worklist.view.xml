@@ -31,6 +31,7 @@
                 noDataText="{worklistView>/tableNoDataText}"
                 busyIndicatorDelay="{worklistView>/tableBusyDelay}"
                 growing="true"
+                growingThreshold="10"
                 growingScrollToLoad="true"
                 updateFinished=".onUpdateFinished">
 
@@ -46,7 +47,7 @@
                         <SearchField
                             id="searchField"
                             tooltip="{i18n>worklistSearchTooltip}"
-                            search=".onSearch">
+                            search=".onSearch2">
                             <layoutData>
                                 <OverflowToolbarLayoutData
                                     maxWidth="200px"

@@ -39,13 +39,13 @@
                         }"
                     />
 
-                <Label text="Descricao" />      <Input id="inpDescricao"/>
+                <Label text="Descricao" />      <Input id="inpDescricao"     valueLiveUpdate="true"/>
                 
                 <Label text="Quantidade" />     
                 <Input  id="inpKwmeng"       
                         value="{
                             path: 'view>/Kwmeng',
-                            type: 'sap.ui.model.type.Float',
+                            type: 'sap.ui.model.type.Decimal',
                             constraints:{
                                 minimum:0
                             }
@@ -57,7 +57,7 @@
                 <Label text="Preço Unitário" /> <Input id="inpNetpr"       
                         value="{
                             path: 'view>/Netpr',
-                            type: 'sap.ui.model.type.Float',
+                            type: 'sap.ui.model.type.Decimal',
                             constraints:{
                                 minimum:0
                             }
