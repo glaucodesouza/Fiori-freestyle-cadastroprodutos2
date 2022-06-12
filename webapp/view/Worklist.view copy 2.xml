@@ -7,9 +7,7 @@
     <semantic:SemanticPage
         id="page"
         headerPinnable="false"
-        toggleHeaderOnTitleClick="false"
-        showFooter="{= ${messagez>/}.length > 0 }"
-        >
+        toggleHeaderOnTitleClick="false">
 
         <semantic:titleHeading>
             <Title
@@ -33,7 +31,6 @@
                 noDataText="{worklistView>/tableNoDataText}"
                 busyIndicatorDelay="{worklistView>/tableBusyDelay}"
                 growing="true"
-                growingThreshold="10"
                 growingScrollToLoad="true"
                 updateFinished=".onUpdateFinished">
 
@@ -49,7 +46,7 @@
                         <SearchField
                             id="searchField"
                             tooltip="{i18n>worklistSearchTooltip}"
-                            search=".onSearch2">
+                            search=".onSearch">
                             <layoutData>
                                 <OverflowToolbarLayoutData
                                     maxWidth="200px"
@@ -89,7 +86,7 @@
                             <Text text="{Descricao}"/>
                             <ObjectNumber number="{
                                     path: 'Kwmeng',
-                                    formatter: '.formatter.Decimal'
+                                    formatter: '.formatter.numberUnit'
                                 }"
                                 unit="{Meins}" />
                             <ObjectNumber number="{
@@ -104,16 +101,6 @@
                 </items>
             </Table>
         </semantic:content>
-
-		<semantic:footerCustomActions>
-			<Button 
-			icon="sap-icon://alert"
-			text="{= ${messagez>/}.length }"
-			visible="{= ${messagez>/}.length > 0 }"
-			type="Emphasized"
-			press="onMessagePopoverPress"
-			></Button>
-		</semantic:footerCustomActions>
 
     </semantic:SemanticPage>
 

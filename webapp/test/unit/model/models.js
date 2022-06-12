@@ -1,7 +1,7 @@
 /*global QUnit*/
 
 sap.ui.define([
-	"fiorinet/cadastroprodutos2/model/models",
+	"fiorinet/cadastroprodutos3/model/models",
 	"sap/ui/Device"
 ], function (models, Device) {
 	"use strict";

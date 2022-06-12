@@ -6,7 +6,7 @@ sap.ui.define([
 ], function (BaseController, JSONModel, History, formatter) {
     "use strict";
 
-    return BaseController.extend("fiorinet.cadastroprodutos2.controller.Object", {
+    return BaseController.extend("fiorinet.cadastroprodutos3.controller.Object", {
 
         formatter: formatter,
 

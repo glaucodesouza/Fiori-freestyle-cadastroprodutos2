@@ -7,31 +7,49 @@ sap.ui.define([
         "sap/ui/core/UIComponent"
     ], function (BaseController, JSONModel, formatter, History, MessageToast, UIComponent) {
         "use strict";
-        return BaseController.extend("fiorinet.cadastroprodutos2.controller.Create", {
+        return BaseController.extend("fiorinet.cadastroprodutos3.controller.Create", {
          formatter: formatter, 
 
             onInit: function () {
                 var oRouter = sap.ui.core.UIComponent.getRouterFor(this);
                 oRouter.getRoute("create").attachPatternMatched(this._onCreateMatched, this);
+
+                //MODEL p/ iniciar valors
+                var oViewModel = new JSONModel({ 
+                    Codigo: 0,
+                    Descricao: '',
+                    Kwmeng: '0.000',
+                    Meins: 'KG',
+                    Netpr: '0.00',
+                    Waerk: 'BRL'
+                });
+                this.getView().setModel(oViewModel, "view");
+
+                // MENSAGENS
+                //Inicializar Controle de mensagens no controller da View atual
+                var oView = this.getView();
+                //registrar a view no message manager
+                sap.ui.getCore().getMessageManager().registerObject(oView,true);
+
             },
                 
-                _onCreateMatched: function (oEvent) {
-                    var m = this.getView().getModel();
-                    m.metadataLoaded().then(function(){
-                    var oContext = m.createEntry('/Z270CADPRODUTOSSet',{
-                            properties: {
-                                Descricao: '',
-                                Kwmeng: '0.00',
-                                Meins: '',
-                                Netpr: '0.00',
-                                Waerk: ''
-                            }
-                        });
-                    this.getView().bindElement({
-                        path: oContext.getPath()
-                        //model: "",
+            _onCreateMatched: function (oEvent) {
+                var m = this.getView().getModel();
+                m.metadataLoaded().then(function(){
+                var oContext = m.createEntry('/Z270CADPRODUTOSSet',{
+                        properties: {
+                            Descricao: '',
+                            Kwmeng: '0.00',
+                            Meins: '',
+                            Netpr: '0.00',
+                            Waerk: ''
+                        }
                     });
-                    }.bind(this));
+                this.getView().bindElement({
+                    path: oContext.getPath()
+                    //model: "",
+                });
+                }.bind(this));
             },
 
             onNavBack: function () {
@@ -58,6 +76,10 @@ sap.ui.define([
                     oRouter.navTo("worklist", {}, true);
                 }
     
+            },
+
+            parseFloatExternoBrasileiro(string){
+                
             },
 
             onGravar:function(){
@@ -108,7 +130,7 @@ sap.ui.define([
 
             onCancelar: function (oEvent) {
                 this.onNavBack();
-                },
+            },
 
 
 

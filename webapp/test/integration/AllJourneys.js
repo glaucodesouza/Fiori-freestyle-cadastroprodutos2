@@ -8,7 +8,7 @@ sap.ui.define([
 
 	Opa5.extendConfig({
 		arrangements: new Startup(),
-		viewNamespace: "fiorinet.cadastroprodutos2.view.",
+		viewNamespace: "fiorinet.cadastroprodutos3.view.",
 		autoWait: true
 	});
 

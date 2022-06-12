@@ -3,7 +3,7 @@ sap.ui.define([
 ], function(Opa5) {
 	"use strict";
 
-	return Opa5.extend("fiorinet.cadastroprodutos2.test.integration.pages.Common", {
+	return Opa5.extend("fiorinet.cadastroprodutos3.test.integration.pages.Common", {
 
 		createAWaitForAnEntitySet : function  (oOptions) {
 			return {
@@ -42,7 +42,7 @@ sap.ui.define([
 
 		getMockServer : function () {
 			return new Promise(function (success) {
-				Opa5.getWindow().sap.ui.require(["fiorinet/cadastroprodutos2/localService/mockserver"], function (mockserver) {
+				Opa5.getWindow().sap.ui.require(["fiorinet/cadastroprodutos3/localService/mockserver"], function (mockserver) {
 					success(mockserver.getMockServer());
 				});
 			});

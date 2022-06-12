@@ -40,7 +40,7 @@ sap.ui.define([
 								"tileType": "sap.ushell.ui.tile.StaticTile",
 								"properties": {
 									"title": "Cadastro de Produtos",
-									"targetURL": "#fiorinetcadastroprodutos2-display"
+									"targetURL": "#fiorinetcadastroprodutos3-display"
 								}
 							}]
 						}]
@@ -51,8 +51,8 @@ sap.ui.define([
 				"adapter": {
 					"config": {
 						"inbounds": {
-							"fiorinetcadastroprodutos2-display": {
-								"semanticObject": "fiorinetcadastroprodutos2",
+							"fiorinetcadastroprodutos3-display": {
+								"semanticObject": "fiorinetcadastroprodutos3",
 								"action": "display",
 								"description": "Cadastro de Produto",
 								"title": "Cadastro de Produtos",
@@ -61,8 +61,8 @@ sap.ui.define([
 								},
 								"resolutionResult": {
 									"applicationType": "SAPUI5",
-									"additionalInformation": "SAPUI5.Component=fiorinet.cadastroprodutos2",
-									"url": sap.ui.require.toUrl("fiorinet/cadastroprodutos2")
+									"additionalInformation": "SAPUI5.Component=fiorinet.cadastroprodutos3",
+									"url": sap.ui.require.toUrl("fiorinet/cadastroprodutos3")
 								}
 							}
 						}
