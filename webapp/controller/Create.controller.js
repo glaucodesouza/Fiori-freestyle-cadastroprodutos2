@@ -67,18 +67,18 @@ sap.ui.define([
                 var dados = {
                  // Codigo:     this.byId("inpCodigo").getValue(),
                     Descricao:  this.byId("inpDescricao").getValue(),
-                    Kwmeng:     parseFloat(this.byId("inpKwmeng").getValue()),
+                    Kwmeng:     this.byId("inpKwmeng").getValue(),
                     Meins:      this.byId("inpMeins").getValue(),
-                    Netpr:      parseFloat(this.byId("inpNetpr").getValue()),
+                    Netpr:      this.byId("inpNetpr").getValue(),
                     Waerk:      this.byId("inpWaerk").getValue()
                 };
-
+                debugger;
                 //FORMA 1 de Criaçãocom  método oData
                 oModel.create("/Z270CADPRODUTOSSet", dados, {
-                    success: function(dados, resposta){      
+                    success: function(oDados, resposta){      
                         debugger;                  
-                        sap.m.MessageToast.show('Produto criado com sucesso !');                        
-                        // var mensagem = JSON.parse(resposta.headers["sap-message"]);
+                        // sap.m.MessageToast.show('Produto criado com sucesso !');                        
+                        //var mensagem = JSON.parse(resposta.headers["sap-message"]);
                         // teste 2
                         // this.getRouter().navTo("object", {
                         //     objectId: dados.Codigo,                            
@@ -91,12 +91,18 @@ sap.ui.define([
                         //this.onNavBack("object", parseInt(dados.Codigo) );
 
                     }.bind(this),
-                    error: function(e){
+                    _error: function (oError) {
                         debugger;
-                        console.log(e);
+                        // console.log(oError);
                         //sap.m.MessageToast.show('Erro ao Criar !');
-                    }.bind(this)
-                } );
+                    }.bind(this),
+                    get error() {
+                        return this._error;
+                    },
+                    set error(value) {
+                        this._error = value;
+                    },
+                });
 
             },
 

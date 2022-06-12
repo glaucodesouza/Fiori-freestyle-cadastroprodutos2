@@ -63,15 +63,17 @@ sap.ui.define([
                     Netpr:      this.byId("inpNetpr").getValue(),
                     Waerk:      this.byId("inpWaerk").getValue()
                 };
-    
+                debugger;
                 //Criação com  método oData
                 oModel.update("/Z270CADPRODUTOSSet(" + dados.Codigo + ")", dados, { 
                     success: function(dados, resposta){                        
+                        debugger;
                         sap.m.MessageToast.show('Produto modificado com sucesso !');
                         this.onNavBack();
     
                     }.bind(this),
                     error: function(e){
+                        debugger;
                         // console.error(e);
                         sap.m.MessageToast.show('Erro ao Modificar !'); 
                     }.bind(this)

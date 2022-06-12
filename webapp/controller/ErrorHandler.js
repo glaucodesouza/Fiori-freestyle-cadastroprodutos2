@@ -15,41 +15,83 @@ sap.ui.define([
          * @public
          * @alias fiorinet.cadastroprodutos2.controller.ErrorHandler
          */
-        constructor : function (oComponent) {
-            var oMessageManager = sap.ui.getCore().getMessageManager(),
-                oMessageModel = oMessageManager.getMessageModel(),
-                oResourceBundle = oComponent.getModel("i18n").getResourceBundle(),
-                sErrorText = oResourceBundle.getText("errorText"),
-                sMultipleErrors = oResourceBundle.getText("multipleErrorsText");
+         constructor : function (oComponent) {
+			this._oResourceBundle = oComponent.getModel("i18n").getResourceBundle();
+			this._oComponent = oComponent;
+			this._oModel = oComponent.getModel();
+			this._bMessageOpen = false;
+			this._sErrorText = this._oResourceBundle.getText("errorText");
 
-            this._oComponent = oComponent;
-            this._bMessageOpen = false;
+			this._oModel.attachMetadataFailed(function (oEvent) {
+				var oParams = oEvent.getParameters();
+				this._showServiceError(oParams.response);
+			}, this);
 
-            this.oMessageModelBinding = oMessageModel.bindList("/", undefined,
-                [], new Filter("technical", FilterOperator.EQ, true));
+			this._oModel.attachRequestFailed(function (oEvent) {
+				var oParams = oEvent.getParameters();
 
-            this.oMessageModelBinding.attachChange(function (oEvent) {
-                var aContexts = oEvent.getSource().getContexts(),
-                    aMessages = [],
-                    sErrorTitle;
+				///CODIGO PARA ADICIONAR MENSAGENS DO BACKEND NO MESSAGEMODEL
+				var oMessageManager = sap.ui.getCore().getMessageManager();
+                    try {
 
-                if (this._bMessageOpen || !aContexts.length) {
+                        let messages = JSON.parse(oParams.response.responseText);
+
+                        let mainMessage = messages.error.message;
+                        let detailMessages = messages.error.innererror.errordetails;
+
+                        if (detailMessages.length == 0)
+                            oMessageManager.addMessages(
+                                new sap.ui.core.message.Message({
+                                    message: mainMessage.value,
+                                    type: sap.ui.core.MessageType.Error,
+                                    code: messages.error.code,
+                                    processor: this._oModel,
+                                })
+                            )
+                        else
+                            detailMessages.forEach( message =>
+                                oMessageManager.addMessages(
+                                    new sap.ui.core.message.Message({
+                                        code: message.code,
+                                        message: message.message,
+                                        type: this.getTypeFromSeverity(message.severity),
+                                        target: `${message.propertyref}${message.target}`,
+                                        processor: this._oModel,
+                                    })
+                                )
+                            );
+
+                    } catch (e) {
+                        console.error(e);
+                    }
                     return;
-                }
 
-                // Extract and remove the technical messages
-                aContexts.forEach(function (oContext) {
-                    aMessages.push(oContext.getObject());
-                });
-                oMessageManager.removeMessages(aMessages);
 
-                // Due to batching there can be more than one technical message. However the UX
-                // guidelines say "display a single message in a message box" assuming that there
-                // will be only one at a time.
-                sErrorTitle = aMessages.length === 1 ? sErrorText : sMultipleErrors;
-                this._showServiceError(sErrorTitle, aMessages[0].message);
-            }, this);
-        },
+
+
+				// An entity that was not found in the service is also throwing a 404 error in oData.
+				// We already cover this case with a notFound target so we skip it here.
+				// A request that cannot be sent to the server is a technical error that we have to handle though
+				if (oParams.response.statusCode !== "404" || (oParams.response.statusCode === 404 && oParams.response.responseText.indexOf("Cannot POST") === 0)) {
+					this._showServiceError(oParams.response);
+				}
+			}, this);
+		},
+
+		getTypeFromSeverity: function(sSeverity) {
+			switch(sSeverity){
+				case "error":
+					return sap.ui.core.MessageType.Error;
+					break;
+				case "info":
+					return sap.ui.core.MessageType.Information;
+					break;
+				case "warning":
+					return sap.ui.core.MessageType.Warning;
+					break;
+			}
+			return sap.ui.core.MessageType.Error;
+		},
 
         /**
          * Shows a {@link sap.m.MessageBox} when a service call has failed.
@@ -58,20 +100,23 @@ sap.ui.define([
          * @param {string} sDetails A technical error to be displayed on request
          * @private
          */
-        _showServiceError : function (sErrorTitle, sDetails) {
-            this._bMessageOpen = true;
-            MessageBox.error(
-                sErrorTitle,
-                {
-                    id : "serviceErrorMessageBox",
-                    details: sDetails,
-                    styleClass: this._oComponent.getContentDensityClass(),
-                    actions: [MessageBox.Action.CLOSE],
-                    onClose: function () {
-                        this._bMessageOpen = false;
-                    }.bind(this)
-                }
-            );
-        }
+         _showServiceError : function (sDetails) {
+			if (this._bMessageOpen) {
+				return;
+			}
+			this._bMessageOpen = true;
+			MessageBox.error(
+				this._sErrorText,
+				{
+					id : "serviceErrorMessageBox",
+					details: sDetails,
+					styleClass: this._oComponent.getContentDensityClass(),
+					actions: [MessageBox.Action.CLOSE],
+					onClose: function () {
+						this._bMessageOpen = false;
+					}.bind(this)
+				}
+			);
+		}
     });
 });

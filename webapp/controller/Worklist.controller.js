@@ -20,20 +20,50 @@ sap.ui.define([
          * @public
          */
         onInit : function () {
-            var oViewModel;
 
-            // keeps the search state
-            this._aTableSearchState = [];
+			// INSTANCIA OBJETOS DE MENSAGEM
+			//var oMessageProcessor = new sap.ui.core.message.ControlMessageProcessor();
+			var oMessageManager = sap.ui.getCore().getMessageManager();
+			//oMessageManager.registerMessageProcessor(oMessageProcessor);
+
+			var oView = this.getView();
+			oView.setModel(oMessageManager.getMessageModel(), "messagez" )
+
+			var oViewModel = new JSONModel({
+				moeda: "BRL",
+				moedaEstrangeira: "JPY"
+				});
+				this.getView().setModel(oViewModel, "view");
+
+			var oViewModel,
+				iOriginalBusyDelay,
+				oTable = this.byId("table");
+
+			// Put down worklist table's original value for busy indicator delay,
+			// so it can be restored later on. Busy handling on the table is
+			// taken care of by the table itself.
+			iOriginalBusyDelay = oTable.getBusyIndicatorDelay();
+			// keeps the search state
+			this._aTableSearchState = [];
 
             // Model used to manipulate control states
             oViewModel = new JSONModel({
-                worklistTableTitle : this.getResourceBundle().getText("worklistTableTitle"),
-                shareSendEmailSubject: this.getResourceBundle().getText("shareSendEmailWorklistSubject"),
-                shareSendEmailMessage: this.getResourceBundle().getText("shareSendEmailWorklistMessage", [location.href]),
-                tableNoDataText : this.getResourceBundle().getText("tableNoDataText")
+				worklistTableTitle: this.getResourceBundle().getText("worklistTableTitle"),
+				shareOnJamTitle: this.getResourceBundle().getText("worklistTitle"),
+				shareSendEmailSubject: this.getResourceBundle().getText("shareSendEmailWorklistSubject"),
+				shareSendEmailMessage: this.getResourceBundle().getText("shareSendEmailWorklistMessage", [location.href]),
+				tableNoDataText: this.getResourceBundle().getText("tableNoDataText"),
+				tableBusyDelay: 0
             });
             this.setModel(oViewModel, "worklistView");
 
+			// Make sure, busy indication is showing immediately so there is no
+			// break after the busy indication for loading the view's meta data is
+			// ended (see promise 'oWhenMetadataIsLoaded' in AppController)
+			oTable.attachEventOnce("updateFinished", function () {
+				// Restore original busy indicator delay for worklist's table
+				oViewModel.setProperty("/tableBusyDelay", iOriginalBusyDelay);
+			});
         },
 
 		/* =========================================================== */
@@ -80,7 +110,6 @@ sap.ui.define([
                 };
         },
 
-
         onDeletar: function(oEvent){
             var oSource = oEvent.getSource();
 			var oParent = oSource.getParent();
@@ -105,21 +134,59 @@ sap.ui.define([
             // Com uso de batch request
             // Deletar todos os registros marcados na tela
             //--------------------------------------------------
-                var oTable = this.byId("table");
-                var aItens = oTable.getSelectedContextPaths();
+			var oTable = this.byId("table");
+			//Pegar linhas selecionadas
+			var aSelectedItens = oTable.getSelectedContexts();
 
-                for(var i = 0; i<aItens.length;i++ ){
-                    //this.getView().getModel().remove(sPath,{
-                    this.getView().getModel().remove(aItens[i],{
-                    success: function(){
-                        //MessageToast.show('Produto eliminado com sucesso.');
-                        console.log("Deletados com Sucesso!");
-                    }.bind(this),
-                    error: function(e){
-                        console.log("Erro ao deletar");
-                    }.bind(this),
+			var aItens = aSelectedItens.map(function(oItem){
+				return oItem.getPath();
+			});
+
+			//Limpar mensagens antigas
+			sap.ui.getCore().getMessageManager().removeAllMessages();
+
+            for(var i = 0; i<aItens.length;i++ ){
+                //this.getView().getModel().remove(sPath,{
+                this.getView().getModel().remove(aItens[i],{
+                success: function(oData, response){ 
+                    debugger;                   
+                    var lv_message = JSON.parse(response.headers["sap-message"]);
+                    //adicionar mensagens no messagemodel
+                    // var oMessage = new sap.ui.core.message.Message({
+                    //         message: mensagem.message,
+                    //         type: mensagem.severity,
+                    //         target: mensagem.target,
+                    //         processor: this.getView().getModel()
+                    //     });
+
+                    
+                    // sap.ui.getCore().getMessageManager().addMessages(oMessage);                    
+                    // sap.m.MessageToast.show(lv_message);
+
+
+                }.bind(this),
+                error: function(e){
+                    debugger;
+                    console.log("Erro ao deletar");
+                }.bind(this),
                 });         
             }
+
+            // var oTable = this.byId("table");
+            // var aItens = oTable.getSelectedContextPaths();
+
+            // for(var i = 0; i<aItens.length;i++ ){
+            //     //this.getView().getModel().remove(sPath,{
+            //     this.getView().getModel().remove(aItens[i],{
+            //     success: function(){
+            //         //MessageToast.show('Produto eliminado com sucesso.');
+            //         console.log("Deletados com Sucesso!");
+            //     }.bind(this),
+            //     error: function(e){
+            //         console.log("Erro ao deletar");
+            //     }.bind(this),
+            //     });         
+            // }
         },
 
 		onAprovarProduto: function(oEvent) {
@@ -146,9 +213,36 @@ sap.ui.define([
 			);
 		},
 
+		onMessagePopoverPress: function(oEvent){
+            debugger;
+			var oSourceControl = oEvent.getSource();
+			this._getMessagePopover().then(
+				function(oMessagePopover){
+					oMessagePopover.openBy(oSourceControl);
+				}
+			);
 
 
+		},
 
+		// método para instanciar o fragment
+		_getMessagePopover: function () {
+			var oView = this.getView();
+            debugger;
+			// cria popover
+			// se não tem instância, criar a instância
+			if (!this._pMessagePopover) {
+				this._pMessagePopover = sap.ui.core.Fragment.load({
+					id: oView.getId(),
+					name: "fiorinet.cadastroprodutos2.view.MessagePopover"
+				}).then(function (oMessagePopover) {
+					oView.addDependent(oMessagePopover);
+					return oMessagePopover;
+				});
+			}
+			// se ja tem instancia, retorna instancia criada 
+			return this._pMessagePopover;
+		},
 
 
         /* =========================================================== */

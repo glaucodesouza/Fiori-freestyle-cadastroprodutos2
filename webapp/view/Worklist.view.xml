@@ -7,7 +7,9 @@
     <semantic:SemanticPage
         id="page"
         headerPinnable="false"
-        toggleHeaderOnTitleClick="false">
+        toggleHeaderOnTitleClick="false"
+        showFooter="{= ${messagez>/}.length > 0 }"
+        >
 
         <semantic:titleHeading>
             <Title
@@ -101,6 +103,16 @@
                 </items>
             </Table>
         </semantic:content>
+
+		<semantic:footerCustomActions>
+			<Button 
+			icon="sap-icon://alert"
+			text="{= ${messagez>/}.length }"
+			visible="{= ${messagez>/}.length > 0 }"
+			type="Emphasized"
+			press="onMessagePopoverPress"
+			></Button>
+		</semantic:footerCustomActions>
 
     </semantic:SemanticPage>
 
