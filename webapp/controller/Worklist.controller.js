@@ -22,10 +22,7 @@ sap.ui.define([
         onInit : function () {
 
 			// INSTANCIA OBJETOS DE MENSAGEM
-			//var oMessageProcessor = new sap.ui.core.message.ControlMessageProcessor();
 			var oMessageManager = sap.ui.getCore().getMessageManager();
-			//oMessageManager.registerMessageProcessor(oMessageProcessor);
-
 			var oView = this.getView();
 			oView.setModel(oMessageManager.getMessageModel(), "messagez" )
 
@@ -76,38 +73,38 @@ sap.ui.define([
         
         onUpdate: function(oEvent){
 
-                var oList = this.byId("table"),
-                oBinding = oList.getBinding("items");
-                var items = oList.getSelectedItems();
-                if (items.length > 1) {
-                    sap.m.MessageToast.show('Selecionar somente 1 linha !');
-                }
-                else {
+            var oList = this.byId("table"),
+            oBinding = oList.getBinding("items");
+            var items = oList.getSelectedItems();
+            if (items.length > 1) {
+                sap.m.MessageToast.show('Selecionar somente 1 linha !');
+            }
+            else {
 
-                    var item = items[0];
-                    var context = item.getBindingContext();
-                    var obj = context.getProperty(null, context);                    
-    
-                    var oModel = this.getView().getModel();
+                var item = items[0];
+                var context = item.getBindingContext();
+                var obj = context.getProperty(null, context);                    
 
-                    var oDados = {
-                        dados : [{
-                            Codigo:     obj.Codigo,
-                            Descricao:  obj.Descricao,
-                            Kwmeng:     obj.Kwmeng,
-                            Meins:      obj.Meins,
-                            Netpr:      obj.Netpr,
-                            Waerk:      obj.Waerk
-                        }]
-                    };
+                var oModel = this.getView().getModel();
 
-                    //cria um novo modelo ja com objeto definido
-                    var oModel = new JSONModel(oDados);
-                    this.getView().setModel(oModel, "produto")
-
-                    var oRouter = sap.ui.core.UIComponent.getRouterFor(this);
-                    oRouter.navTo("update");
+                var oDados = {
+                    dados : [{
+                        Codigo:     obj.Codigo,
+                        Descricao:  obj.Descricao,
+                        Kwmeng:     obj.Kwmeng,
+                        Meins:      obj.Meins,
+                        Netpr:      obj.Netpr,
+                        Waerk:      obj.Waerk
+                    }]
                 };
+
+                //cria um novo modelo ja com objeto definido
+                var oModel = new JSONModel(oDados);
+                this.getView().setModel(oModel, "produto")
+
+                var oRouter = sap.ui.core.UIComponent.getRouterFor(this);
+                oRouter.navTo("update");
+            };
         },
 
         onDeletar: function(oEvent){
@@ -134,6 +131,10 @@ sap.ui.define([
             // Com uso de batch request
             // Deletar todos os registros marcados na tela
             //--------------------------------------------------
+
+			//Limpar mensagens antigas
+			sap.ui.getCore().getMessageManager().removeAllMessages();
+
 			var oTable = this.byId("table");
 			//Pegar linhas selecionadas
 			var aSelectedItens = oTable.getSelectedContexts();
@@ -141,9 +142,6 @@ sap.ui.define([
 			var aItens = aSelectedItens.map(function(oItem){
 				return oItem.getPath();
 			});
-
-			//Limpar mensagens antigas
-			sap.ui.getCore().getMessageManager().removeAllMessages();
 
             for(var i = 0; i<aItens.length;i++ ){
                 //this.getView().getModel().remove(sPath,{
@@ -234,7 +232,7 @@ sap.ui.define([
 			if (!this._pMessagePopover) {
 				this._pMessagePopover = sap.ui.core.Fragment.load({
 					id: oView.getId(),
-					name: "fiorinet.cadastroprodutos2.view.MessagePopover"
+					name: "fiorinet.cadastroprodutos3.view.MessagePopover"
 				}).then(function (oMessagePopover) {
 					oView.addDependent(oMessagePopover);
 					return oMessagePopover;
@@ -243,7 +241,6 @@ sap.ui.define([
 			// se ja tem instancia, retorna instancia criada 
 			return this._pMessagePopover;
 		},
-
 
         /* =========================================================== */
         /* event handlers                                              */

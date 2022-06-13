@@ -11,6 +11,12 @@ sap.ui.define([
          formatter: formatter, 
 
             onInit: function () {
+
+                // INSTANCIA OBJETOS DE MENSAGEM
+                var oMessageManager = sap.ui.getCore().getMessageManager();
+                var oView = this.getView();
+                oView.setModel(oMessageManager.getMessageModel(), "messagez" )
+
                 var oRouter = sap.ui.core.UIComponent.getRouterFor(this);
                 oRouter.getRoute("create").attachPatternMatched(this._onCreateMatched, this);
 
@@ -25,12 +31,11 @@ sap.ui.define([
                 });
                 this.getView().setModel(oViewModel, "view");
 
-                // MENSAGENS
-                //Inicializar Controle de mensagens no controller da View atual
-                var oView = this.getView();
-                //registrar a view no message manager
-                sap.ui.getCore().getMessageManager().registerObject(oView,true);
-
+                // // MENSAGENS
+                // //Inicializar Controle de mensagens no controller da View atual
+                // var oView = this.getView();
+                // //registrar a view no message manager
+                // sap.ui.getCore().getMessageManager().registerObject(oView,true);
             },
                 
             _onCreateMatched: function (oEvent) {
@@ -84,6 +89,9 @@ sap.ui.define([
 
             onGravar:function(){
               
+                //Limpar mensagens antigas
+                sap.ui.getCore().getMessageManager().removeAllMessages();
+
                 var oModel = this.getView().getModel();
 
                 var dados = {
@@ -97,9 +105,12 @@ sap.ui.define([
                 debugger;
                 //FORMA 1 de Criaçãocom  método oData
                 oModel.create("/Z270CADPRODUTOSSet", dados, {
-                    success: function(oDados, resposta){      
-                        debugger;                  
-                        // sap.m.MessageToast.show('Produto criado com sucesso !');                        
+                    success: function(oDados, response){      
+                        debugger;
+                            //var lv_message = JSON.parse(response.headers["sap-message"]);
+                            //this.getView().setBusy(false);
+                        var lv_message = JSON.parse(response.headers["sap-message"]);
+                        sap.m.MessageToast.show('Produto ' + oDados.Codigo + ' criado com sucesso !');                        
                         //var mensagem = JSON.parse(resposta.headers["sap-message"]);
                         // teste 2
                         // this.getRouter().navTo("object", {
@@ -113,16 +124,13 @@ sap.ui.define([
                         //this.onNavBack("object", parseInt(dados.Codigo) );
 
                     }.bind(this),
-                    _error: function (oError) {
-                        debugger;
-                        // console.log(oError);
-                        //sap.m.MessageToast.show('Erro ao Criar !');
-                    }.bind(this),
-                    get error() {
-                        return this._error;
-                    },
-                    set error(value) {
-                        this._error = value;
+                    error: function (oData) {
+
+                        MessageToast.show("Aconteceu um erro.");    
+                        console.error(oData);
+    
+                        //this.getView().setBusy(false);
+                        this.onNavBack();  
                     },
                 });
 

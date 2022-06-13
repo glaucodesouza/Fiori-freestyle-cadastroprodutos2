@@ -14,9 +14,21 @@ sap.ui.define([
             // },
 
             onInit: function(){
+
+                // INSTANCIA OBJETOS DE MENSAGEM
+                var oMessageManager = sap.ui.getCore().getMessageManager();
+                var oView = this.getView();
+                oView.setModel(oMessageManager.getMessageModel(), "messagez" )
+
                 var oRouter = this.getOwnerComponent().getRouter();
                 //toda vez que o patern dor detailPage, executar a função this._onObjectMatched
                 oRouter.getRoute("update").attachPatternMatched(this._onObjectMatched,this);
+                
+                // // MENSAGENS
+                // //Inicializar Controle de mensagens no controller da View atual
+                // var oView = this.getView();
+                // //registrar a view no message manager
+                // sap.ui.getCore().getMessageManager().registerObject(oView,true);              
             },
     
             _onObjectMatched:function(oEvent){
@@ -53,6 +65,9 @@ sap.ui.define([
 
             onGravar:function(){
               
+                //Limpar mensagens antigas
+                sap.ui.getCore().getMessageManager().removeAllMessages();
+
                 var oModel = this.getView().getModel();
     
                 var dados = {
@@ -66,9 +81,10 @@ sap.ui.define([
                 debugger;
                 //Criação com  método oData
                 oModel.update("/Z270CADPRODUTOSSet(" + dados.Codigo + ")", dados, { 
-                    success: function(dados, resposta){                        
+                    success: function(oDados, response){                        
                         debugger;
-                        sap.m.MessageToast.show('Produto modificado com sucesso !');
+                        var lv_message = JSON.parse(response.headers["sap-message"]);
+                        sap.m.MessageToast.show('Produto ' + dados.Codigo + ' modificado com sucesso !');
                         this.onNavBack();
     
                     }.bind(this),
@@ -80,12 +96,6 @@ sap.ui.define([
                 });
     
             },
-
-
-
-
-
-    
         });
     });  
     

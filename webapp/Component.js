@@ -22,7 +22,7 @@ sap.ui.define([
             // call the base component's init function
             UIComponent.prototype.init.apply(this, arguments);
 
-            // initialize the error handler with the component
+            // initialize the error handler messagez with the component
             this._oErrorHandler = new ErrorHandler(this);
 
             // set the device model

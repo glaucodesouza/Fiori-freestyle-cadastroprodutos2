@@ -73,7 +73,7 @@
                         <Text text="Preço Líquido" id="netprColumnLabel"/>
                     </Column>
                     <Column hAlign="End">
-						<Text text="Aprovar" />
+						<Text text="Aprovar Venda" />
 					</Column>
                     <Column hAlign="End">
 						<Text text="Deletar" />

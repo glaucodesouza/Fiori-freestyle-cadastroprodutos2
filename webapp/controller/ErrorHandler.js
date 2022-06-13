@@ -35,10 +35,10 @@ sap.ui.define([
                     try {
 
                         let messages = JSON.parse(oParams.response.responseText);
-
                         let mainMessage = messages.error.message;
                         let detailMessages = messages.error.innererror.errordetails;
 
+                        //Se mensagem atual tem detalhes da SE91, então, ler os detalhes da mensagem
                         if (detailMessages.length == 0)
                             oMessageManager.addMessages(
                                 new sap.ui.core.message.Message({
@@ -48,6 +48,8 @@ sap.ui.define([
                                     processor: this._oModel,
                                 })
                             )
+
+                        //SE A MENSAGEM ATUAL NÃO TEM DETALHES da SE91, então, sem detalhes.
                         else
                             detailMessages.forEach( message =>
                                 oMessageManager.addMessages(
