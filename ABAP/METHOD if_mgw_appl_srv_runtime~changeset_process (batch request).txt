@@ -12,6 +12,8 @@
     FIELD-SYMBOLS:
         <fs_ls_changeset_request>  LIKE LINE OF it_changeset_request.
 
+    DATA(lv_container) = mo_context->get_message_container( ).
+
     LOOP AT it_changeset_request ASSIGNING <fs_ls_changeset_request>.
       lr_context          ?= <fs_ls_changeset_request>-request_context.
       lr_entry_provider    = <fs_ls_changeset_request>-entry_provider.
@@ -38,7 +40,19 @@
 
                   ls_changeset_response-operation_no = <fs_ls_changeset_request>-operation_no.
                   INSERT ls_changeset_response INTO TABLE ct_changeset_response.
+                ELSE.
+                  " ERRO. Sair.
+                  lv_container->add_message_text_only(
+                    EXPORTING
+                      iv_msg_type               = 'E'
+                      iv_msg_text               = 'Erro ao deletar'
+                      iv_is_leading_message     = 'X'
+                      iv_add_to_response_header = 'X' ).
 
+                  DATA(lv_erro) = 'X'.
+                  RAISE EXCEPTION TYPE /iwbep/cx_mgw_busi_exception
+                    EXPORTING
+                      message_container = lv_container.
                 ENDIF.
               ENDIF.
             ENDIF.
@@ -46,5 +60,11 @@
         WHEN OTHERS.
       ENDCASE.
     ENDLOOP.
+
+    IF lv_erro = 'X'.
+      RAISE EXCEPTION TYPE /iwbep/cx_mgw_busi_exception
+        EXPORTING
+          message_container = lv_container.
+    ENDIF.
 
   ENDMETHOD.

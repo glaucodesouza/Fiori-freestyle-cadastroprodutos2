@@ -1,5 +1,6 @@
   METHOD z270cadprodutoss_delete_entity.
     DATA: ls_keys TYPE zcl_z270cadprodutos_mpc=>ts_z270cadprodutos.
+    DATA(lv_container) = mo_context->get_message_container( ).
 
     io_tech_request_context->get_converted_keys(
     IMPORTING
@@ -7,5 +8,28 @@
 
     DELETE FROM z270cadprodutos
      WHERE codigo = ls_keys-codigo.
+
+    IF sy-subrc = 0.
+
+      lv_container->add_message_text_only(
+        EXPORTING
+          iv_msg_type               = 'S'
+          iv_msg_text               = 'Produto excluído com sucesso !'
+          iv_is_leading_message     = 'X'
+          iv_add_to_response_header = 'X' ).
+
+    ELSE.
+      lv_container->add_message_text_only(
+        EXPORTING
+          iv_msg_type               = 'E'
+          iv_msg_text               = 'Erro ao deletar produto !'
+          iv_is_leading_message     = 'X'
+          iv_add_to_response_header = 'X' ).
+
+      RAISE EXCEPTION TYPE /iwbep/cx_mgw_busi_exception
+        EXPORTING
+          message_container = lv_container.
+
+    ENDIF.
 
   ENDMETHOD.

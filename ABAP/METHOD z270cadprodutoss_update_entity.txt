@@ -3,7 +3,7 @@
     DATA(lv_container) = mo_context->get_message_container( ). "tratamento de mensagens
     DATA: ls_cadprodutos TYPE z270cadprodutos.
 
-    "DADOS DA SOLICITAÇÃO
+    "DADOS DA SOLICITAÃ‡ÃƒO
     io_data_provider->read_entry_data(
     IMPORTING
     es_data = er_entity
@@ -36,16 +36,23 @@
       lv_container->add_message_text_only(
         EXPORTING
           iv_msg_type               = 'S'
-          iv_msg_text               = 'Criado com sucessagem !'
-      ).
+          iv_msg_text               = 'Produto modificado !'
+          iv_is_leading_message     = 'X'
+          iv_add_to_response_header = 'X' ).
 
     ELSE.
+
       lv_container->add_message_text_only(
         EXPORTING
-          iv_msg_type               = 'N'
-          iv_msg_text               = 'Erro !'
-          iv_add_to_response_header = 'X'
-      ).
+          iv_msg_type               = 'E'
+          iv_msg_text               = 'Erro ao modificar produto !'
+          iv_is_leading_message     = 'X'
+          iv_add_to_response_header = 'X' ).
+
+      RAISE EXCEPTION TYPE /iwbep/cx_mgw_busi_exception
+        EXPORTING
+          message_container = lv_container.
+
     ENDIF.
 
   ENDMETHOD.
