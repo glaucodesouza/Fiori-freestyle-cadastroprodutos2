@@ -8,20 +8,16 @@ sap.ui.define([
     ], function (BaseController, JSONModel, formatter, History, MessageToast, UIComponent) {
         "use strict";
         return BaseController.extend("fiorinet.cadastroprodutos3.controller.Update", {
-         formatter: formatter,
-            // onInit: function(){
-            //     console.log("UPDATE: onInit()");
-            // },
+         formatter: formatter,         
 
             onInit: function(){
 
                 // INSTANCIA OBJETOS DE MENSAGEM
                 var oMessageManager = sap.ui.getCore().getMessageManager();
                 var oView = this.getView();
-                oView.setModel(oMessageManager.getMessageModel(), "messagez" )
+                oView.setModel(oMessageManager.getMessageModel(), "messagez" );
 
                 var oRouter = this.getOwnerComponent().getRouter();
-                //toda vez que o patern dor detailPage, executar a função this._onObjectMatched
                 oRouter.getRoute("update").attachPatternMatched(this._onObjectMatched,this);
                 
                 // // MENSAGENS
@@ -78,7 +74,7 @@ sap.ui.define([
                     Netpr:      this.byId("inpNetpr").getValue(),
                     Waerk:      this.byId("inpWaerk").getValue()
                 };
-                debugger;
+
                 //Criação com  método oData
                 oModel.update("/Z270CADPRODUTOSSet(" + dados.Codigo + ")", dados, { 
                     success: function(oDados, response){                        
@@ -88,10 +84,13 @@ sap.ui.define([
                         this.onNavBack();
     
                     }.bind(this),
-                    error: function(e){
+                    error: function(Error){
                         debugger;
-                        // console.error(e);
-                        sap.m.MessageToast.show('Erro ao Modificar !'); 
+                        //SE DER erro, copiar do error do CREATE !!!
+                        var lv_mensagem = JSON.parse(Error.response.body).error.message.value;
+                        MessageToast.show(lv_mensagem + dados.Codigo);
+                        this.onNavBack();
+                        // sap.m.MessageToast.show('Erro ao Modificar !'); 
                     }.bind(this)
                 });
     

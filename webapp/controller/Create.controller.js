@@ -15,7 +15,7 @@ sap.ui.define([
                 // INSTANCIA OBJETOS DE MENSAGEM
                 var oMessageManager = sap.ui.getCore().getMessageManager();
                 var oView = this.getView();
-                oView.setModel(oMessageManager.getMessageModel(), "messagez" )
+                oView.setModel(oMessageManager.getMessageModel(), "messagez" );
 
                 var oRouter = sap.ui.core.UIComponent.getRouterFor(this);
                 oRouter.getRoute("create").attachPatternMatched(this._onCreateMatched, this);
@@ -51,8 +51,9 @@ sap.ui.define([
                         }
                     });
                 this.getView().bindElement({
-                    path: oContext.getPath()
-                    //model: "",
+                    path: oContext.getPath(),
+                    expand: "view"
+                    //model: "view",
                 });
                 }.bind(this));
             },
@@ -102,7 +103,7 @@ sap.ui.define([
                     Netpr:      this.byId("inpNetpr").getValue(),
                     Waerk:      this.byId("inpWaerk").getValue()
                 };
-                debugger;
+
                 //FORMA 1 de Criaçãocom  método oData
                 oModel.create("/Z270CADPRODUTOSSet", dados, {
                     success: function(oDados, response){      
@@ -124,14 +125,16 @@ sap.ui.define([
                         //this.onNavBack("object", parseInt(dados.Codigo) );
 
                     }.bind(this),
-                    error: function (oData) {
-
-                        MessageToast.show("Aconteceu um erro.");    
-                        console.error(oData);
-    
+                    error: function(Error) {
+                        debugger;
+                        var lv_mensagem = JSON.parse(Error.responseText).error.message.value;
+                        MessageToast.show(lv_mensagem + dados.Descricao);
+                        this.onNavBack();
+                        // MessageToast.show("Aconteceu um erro.");    
+                        // console.error(oData);    
                         //this.getView().setBusy(false);
-                        this.onNavBack();  
-                    },
+                        // this.onNavBack();
+                    }.bind(this),
                 });
 
             },
