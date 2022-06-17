@@ -212,7 +212,7 @@ sap.ui.define([
 		},
 
 		onMessagePopoverPress: function(oEvent){
-            debugger;
+
 			var oSourceControl = oEvent.getSource();
 			this._getMessagePopover().then(
 				function(oMessagePopover){
@@ -226,7 +226,7 @@ sap.ui.define([
 		// método para instanciar o fragment
 		_getMessagePopover: function () {
 			var oView = this.getView();
-            debugger;
+
 			// cria popover
 			// se não tem instância, criar a instância
 			if (!this._pMessagePopover) {

@@ -33,6 +33,7 @@ debugger;
 				///CODIGO PARA ADICIONAR MENSAGENS DO BACKEND NO MESSAGEMODEL
 				var oMessageManager = sap.ui.getCore().getMessageManager();
                 oMessageManager.removeAllMessages();
+
                 oMessageManager;
                     try {
 
@@ -53,6 +54,8 @@ debugger;
 
                         //SE A MENSAGEM ATUAL NÃO TEM DETALHES da SE91, então, sem detalhes.
                         else
+
+                            //Lógica original 1 (funcionando)
                             detailMessages.forEach( message =>
                                 oMessageManager.addMessages(
                                     new sap.ui.core.message.Message({
@@ -64,6 +67,37 @@ debugger;
                                     })
                                 )
                             );
+                            
+                            // Teste 2: Não deu certo apenas porque não consegui deletar do aMessageManager
+                            //
+                            // var aMessages = sap.ui.getCore().getMessageManager().getMessageModel().getData();
+                            // var sMessage = aMessages.filter(function (mainMessage) {
+                            //     return mainMessage.target === sTarget;
+                            // });
+                            //oMessageManager.removeMessage(sMessage.value);
+                            //sap.ui.getCore().getMessageManager().removeMessages(sMessage);
+                            
+                            //  var aMessageManager = sap.ui.getCore().getMessageManager().getMessageModel().getData();
+
+                            // for(var i = 0; i<aMessageManager.length;i++ ){
+                            //     if (aMessageManager[i].message == mainMessage.value){
+                            //         var ja_existe = true;
+                            //         break; 
+                            //     }
+                            // }
+                            // if (ja_existe){
+                            //     oMessageManager.removeMessage(aMessageManager[i]);
+                            //     oMessageManager.forEach ( message ),
+                            //         oMessageManager.addMessages(
+                            //             new sap.ui.core.message.Message({
+                            //                 code: message.code,
+                            //                 message: message.message,
+                            //                 type: this.getTypeFromSeverity(message.severity),
+                            //                 target: `${message.propertyref}${message.target}`,
+                            //                 processor: this._oModel,
+                            //             })
+                            //         )
+                            // }
 
                     } catch (e) {
                         console.error(e);
