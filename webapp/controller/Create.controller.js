@@ -13,15 +13,15 @@ sap.ui.define([
             onInit: function () {
 
                 // INSTANCIA OBJETOS DE MENSAGEM
-                var oMessageManager = sap.ui.getCore().getMessageManager();
-                var oView = this.getView();
-                oView.setModel(oMessageManager.getMessageModel(), "messagez" );
+                // var oMessageManager = sap.ui.getCore().getMessageManager();
+                // var oView = this.getView();
+                // oView.setModel(oMessageManager.getMessageModel(), "messagez" );
 
                 var oRouter = sap.ui.core.UIComponent.getRouterFor(this);
                 oRouter.getRoute("create").attachPatternMatched(this._onCreateMatched, this);
 
                 //MODEL p/ iniciar valors
-                var oViewModel = new JSONModel({ 
+                var oViewModel = new JSONModel({
                     Codigo: 0,
                     Descricao: '',
                     Kwmeng: '0.000',
@@ -107,7 +107,6 @@ sap.ui.define([
                 //FORMA 1 de Criaçãocom  método oData
                 oModel.create("/Z270CADPRODUTOSSet", dados, {
                     success: function(oDados, response){      
-                        debugger;
                             //var lv_message = JSON.parse(response.headers["sap-message"]);
                             //this.getView().setBusy(false);
                         var lv_message = JSON.parse(response.headers["sap-message"]);
@@ -126,7 +125,6 @@ sap.ui.define([
 
                     }.bind(this),
                     error: function(Error) {
-                        debugger;
                         var lv_mensagem = JSON.parse(Error.responseText).error.message.value;
                         MessageToast.show(lv_mensagem + dados.Descricao);
                         this.onNavBack();
