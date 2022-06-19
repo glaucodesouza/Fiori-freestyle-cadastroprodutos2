@@ -6,15 +6,33 @@
                 <Key>
                     <PropertyRef Name="Codigo"/>
                 </Key>
-                <Property Name="Codigo" Type="Edm.Int16" Nullable="false" sap:unicode="false" sap:label="Codigo" sap:updatable="false"/>
+                <Property Name="Codigo" Type="Edm.Int16" Nullable="false" sap:unicode="false" sap:label="Codigo"/>
                 <Property Name="Descricao" Type="Edm.String" MaxLength="75" sap:unicode="false" sap:label="Descricao"/>
                 <Property Name="Kwmeng" Type="Edm.Decimal" Precision="15" Scale="3" sap:unicode="false" sap:unit="Meins" sap:label="Kwmeng"/>
                 <Property Name="Meins" Type="Edm.String" MaxLength="3" sap:unicode="false" sap:label="Meins" sap:semantics="unit-of-measure"/>
                 <Property Name="Netpr" Type="Edm.Decimal" Precision="12" Scale="3" sap:unicode="false" sap:unit="Waerk" sap:label="Netpr"/>
                 <Property Name="Waerk" Type="Edm.String" MaxLength="5" sap:unicode="false" sap:label="Waerk" sap:semantics="currency-code"/>
+                <Property Name="Aprovado" Type="Edm.Boolean" sap:unicode="false" sap:label="Aprovado"/>
+            </EntityType>
+            <EntityType Name="Anexo" m:HasStream="true" sap:content-version="1">
+                <Key>
+                    <PropertyRef Name="Filename"/>
+                </Key>
+                <Property Name="Filename" Type="Edm.String" Nullable="false" MaxLength="100" sap:unicode="false" sap:label="Caractere 100" sap:creatable="false" sap:updatable="false" sap:sortable="false" sap:filterable="false"/>
+                <Property Name="Sydate" Type="Edm.DateTime" Nullable="false" Precision="7" sap:unicode="false" sap:label="Data atual" sap:creatable="false" sap:updatable="false" sap:sortable="false" sap:filterable="false"/>
+                <Property Name="Sytime" Type="Edm.Time" Nullable="false" Precision="0" sap:unicode="false" sap:label="Hora" sap:creatable="false" sap:updatable="false" sap:sortable="false" sap:filterable="false"/>
+                <Property Name="Value" Type="Edm.Binary" Nullable="false" sap:unicode="false" sap:label="cadeia binária" sap:creatable="false" sap:updatable="false" sap:sortable="false" sap:filterable="false"/>
+                <Property Name="Mimetype" Type="Edm.String" Nullable="false" MaxLength="100" sap:unicode="false" sap:label="Caractere 100" sap:creatable="false" sap:updatable="false" sap:sortable="false" sap:filterable="false"/>
             </EntityType>
             <EntityContainer Name="Z270CADPRODUTOS_SRV_Entities" m:IsDefaultEntityContainer="true" sap:supported-formats="atom json xlsx">
-                <EntitySet Name="Z270CADPRODUTOSSet" EntityType="Z270CADPRODUTOS_SRV.Z270CADPRODUTOS" sap:addressable="false" sap:content-version="1"/>
+                <EntitySet Name="Z270CADPRODUTOSSet" EntityType="Z270CADPRODUTOS_SRV.Z270CADPRODUTOS" sap:searchable="true" sap:addressable="false" sap:content-version="1"/>
+                <EntitySet Name="AnexoSet" EntityType="Z270CADPRODUTOS_SRV.Anexo" sap:creatable="false" sap:updatable="false" sap:deletable="false" sap:pageable="false" sap:addressable="false" sap:content-version="1"/>
+                <FunctionImport Name="deletar_produto" ReturnType="Z270CADPRODUTOS_SRV.Z270CADPRODUTOS" EntitySet="Z270CADPRODUTOSSet" m:HttpMethod="GET" sap:action-for="Z270CADPRODUTOS_SRV.Z270CADPRODUTOS">
+                    <Parameter Name="Codigo" Type="Edm.Int16" Mode="In"/>
+                </FunctionImport>
+                <FunctionImport Name="aprovar_produto" ReturnType="Z270CADPRODUTOS_SRV.Z270CADPRODUTOS" EntitySet="Z270CADPRODUTOSSet" m:HttpMethod="GET" sap:action-for="Z270CADPRODUTOS_SRV.Z270CADPRODUTOS">
+                    <Parameter Name="Codigo" Type="Edm.Int16" Mode="In"/>
+                </FunctionImport>
             </EntityContainer>
             <atom:link rel="self" href="https://lnl-s4h.opustech.com.br:5200/sap/opu/odata/sap/Z270CADPRODUTOS_SRV/$metadata" xmlns:atom="http://www.w3.org/2005/Atom"/>
             <atom:link rel="latest-version" href="https://lnl-s4h.opustech.com.br:5200/sap/opu/odata/sap/Z270CADPRODUTOS_SRV/$metadata" xmlns:atom="http://www.w3.org/2005/Atom"/>

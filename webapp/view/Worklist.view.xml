@@ -46,6 +46,7 @@
                         <ToolbarSpacer />
                         <Button id="btnCriar"           text="Criar"            press="onCriar"         type="Emphasized"/>
                         <Button id="btnDeletarMuitos"   text="Eliminar Vários"  press="onDeletarMuitos" type="Emphasized"/>
+                        <Button id="btnAnexos"          text="Anexos"           press="onAnexos"        type="Emphasized"/>
                         <SearchField
                             id="searchField"
                             tooltip="{i18n>worklistSearchTooltip}"

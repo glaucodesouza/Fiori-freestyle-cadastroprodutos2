@@ -1,6 +1,5 @@
 {
     "_version": "1.32.0",
-
     "sap.app": {
         "id": "fiorinet.cadastroprodutos3",
         "type": "application",
@@ -22,7 +21,6 @@
             }
         }
     },
-
     "sap.ui": {
         "technology": "UI5",
         "icons": {
@@ -39,7 +37,6 @@
             "phone": true
         }
     },
-
     "sap.ui5": {
         "handleValidation": true,
         "flexEnabled": true,
@@ -67,7 +64,8 @@
                 "preload": true,
                 "settings": {
                     "defaultBindingMode": "TwoWay",
-                    "useBatch": false
+                    "defaultCountMode": "Inline",
+                    "refreshAfterChange": false
                 }
             }
         },
@@ -92,12 +90,16 @@
                 {
                     "pattern": "",
                     "name": "worklist",
-                    "target": ["worklist"]
+                    "target": [
+                        "worklist"
+                    ]
                 },
                 {
                     "pattern": "Produto/{objectId}",
                     "name": "object",
-                    "target": ["object"]
+                    "target": [
+                        "object"
+                    ]
                 },
                 {
                     "pattern": "create",
@@ -107,7 +109,16 @@
                 {
                     "pattern": "Modificar/{objectId}",
                     "name": "update",
-                    "target": ["update"]
+                    "target": [
+                        "update"
+                    ]
+                },
+                {
+                    "pattern": "anexos",
+                    "name": "anexos",
+                    "target": [
+                        "anexos"
+                    ]
                 }
             ],
             "targets": {
@@ -139,6 +150,11 @@
                 "update": {
                     "viewId": "update",
                     "viewName": "Update",
+                    "viewLevel": 2
+                },
+                "anexos": {
+                    "viewId": "anexos",
+                    "viewName": "Anexos",
                     "viewLevel": 2
                 }
             }

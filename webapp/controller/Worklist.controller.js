@@ -186,6 +186,10 @@ sap.ui.define([
             //     });         
             // }
         },
+        onAnexos: function(){
+            var oRouter = sap.ui.core.UIComponent.getRouterFor(this);
+            oRouter.navTo("anexos", {});
+        },
 
 		onAprovarProduto: function(oEvent) {
             var oSource = oEvent.getSource();

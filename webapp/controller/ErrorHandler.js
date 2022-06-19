@@ -29,7 +29,7 @@ sap.ui.define([
 
 			this._oModel.attachRequestFailed(function (oEvent) {
 				var oParams = oEvent.getParameters();
-debugger;
+                debugger;
 				///CODIGO PARA ADICIONAR MENSAGENS DO BACKEND NO MESSAGEMODEL
 				var oMessageManager = sap.ui.getCore().getMessageManager();
                 oMessageManager.removeAllMessages();

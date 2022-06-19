@@ -1,0 +1,92 @@
+<mvc:View
+	controllerName="fiorinet.cadastroprodutos3.controller.Anexos"
+	xmlns="sap.m"
+	xmlns:mvc="sap.ui.core.mvc"
+	xmlns:u="sap.ui.unified"
+	xmlns:semantic="sap.f.semantic">
+
+	<semantic:SemanticPage
+		id="page"
+		headerPinnable="false"
+		toggleHeaderOnTitleClick="false">
+
+		<semantic:titleHeading>
+			<Title
+				text="{i18n>worklistTitle}"
+				level="H2"/>
+		</semantic:titleHeading>
+
+		<semantic:content>
+			<Table
+				id="table"
+				width="auto"
+				items="{
+					path: '/AnexoSet',
+					sorter: {
+						path: 'Filename',
+						descending: false
+					}
+				}"
+				noDataText="{worklistView>/tableNoDataText}"
+				busyIndicatorDelay="{worklistView>/tableBusyDelay}"
+				growing="true"
+				growingScrollToLoad="true"
+				updateFinished=".onUpdateFinished">
+
+				<headerToolbar>
+					<OverflowToolbar>
+						<Title
+							id="tableHeader"
+							text="{worklistView>/worklistTableTitle}"
+							level="H3"/>
+						<ToolbarSpacer />
+
+						<u:FileUploader
+							id="fileUploader"
+							name="myFileUpload"
+							useMultipart="false"
+							uploadUrl="/sap/opu/odata/sap/Z270CADPRODUTOS_SRV/AnexoSet"
+							tooltip="Anexar arquivo"
+							uploadComplete="handleUploadComplete"/>
+						<Button
+							text="Upload File"
+							press="handleUploadPress"/>
+
+						<SearchField
+							id="searchField"
+							tooltip="{i18n>worklistSearchTooltip}"
+							search=".onSearch">
+							<layoutData>
+								<OverflowToolbarLayoutData
+									maxWidth="200px"
+									priority="NeverOverflow"/>
+							</layoutData>
+						</SearchField>
+					</OverflowToolbar>
+				</headerToolbar>
+
+				<columns>
+					<Column id="arquivoColumn">
+						<Text text="Arquivo" id="arquivoColumnTitle"/>
+					</Column>
+					<Column id="mimetypeColumn">
+						<Text text="Tipo" id="mimetypeColumnTitle"/>
+					</Column>
+				</columns>
+
+				<items>
+					<ColumnListItem
+						type="Navigation"
+						press=".onPress">
+						<cells>
+							<ObjectIdentifier title="{Filename}"/>
+							<ObjectAttribute text="{Mimetype}" active="false" press="fun"/>							
+						</cells>
+					</ColumnListItem>
+				</items>
+			</Table>
+		</semantic:content>
+
+	</semantic:SemanticPage>
+
+</mvc:View>
