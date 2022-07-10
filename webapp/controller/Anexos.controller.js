@@ -7,7 +7,7 @@ sap.ui.define([
 ], function (BaseController, JSONModel, formatter, Filter, FilterOperator) {
 	"use strict";
 
-	return BaseController.extend("cliente.cliente.controller.Anexos", {
+	return BaseController.extend("fiorinet.cadastroprodutos3.controller.Anexos", {
 
 		formatter: formatter,
 
@@ -33,7 +33,7 @@ sap.ui.define([
 
 			// Model used to manipulate control states
 			oViewModel = new JSONModel({
-				worklistTableTitle : this.getResourceBundle().getText("worklistTableTitle"),
+				worklistTableTitle : this.getResourceBundle().getText("anexosTableTitle"),
 				shareOnJamTitle: this.getResourceBundle().getText("worklistTitle"),
 				shareSendEmailSubject: this.getResourceBundle().getText("shareSendEmailWorklistSubject"),
 				shareSendEmailMessage: this.getResourceBundle().getText("shareSendEmailWorklistMessage", [location.href]),
@@ -116,7 +116,7 @@ sap.ui.define([
 			} else {
 				sTitle = this.getResourceBundle().getText("worklistTableTitle");
 			}
-			this.getModel("worklistView").setProperty("/worklistTableTitle", sTitle);
+			this.getModel("worklistView").setProperty("/anexosTableTitle", sTitle);
 		},
 
 		/**
@@ -139,7 +139,6 @@ sap.ui.define([
 			history.go(-1);
 		},
 
-
 		onSearch : function (oEvent) {
 			if (oEvent.getParameters().refreshButtonPressed) {
 				// Search field's 'refresh' button has been pressed.
@@ -156,7 +155,6 @@ sap.ui.define([
 				}
 				this._applySearch(aTableSearchState);
 			}
-
 		},
 
 		/**

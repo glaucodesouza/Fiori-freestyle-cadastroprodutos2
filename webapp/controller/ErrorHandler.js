@@ -100,7 +100,7 @@ sap.ui.define([
                             // }
 
                     } catch (e) {
-                        console.error(e);
+                        console.log(e);
                     }
                     return;
 
