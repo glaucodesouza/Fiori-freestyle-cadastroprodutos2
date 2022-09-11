@@ -8,7 +8,7 @@ sap.ui.define([
     ], function (BaseController, JSONModel, formatter, History, MessageToast, UIComponent) {
         "use strict";
         return BaseController.extend("fiorinet.cadastroprodutos3.controller.Create", {
-         formatter: formatter, 
+        formatter: formatter, 
 
             onInit: function () {
 
@@ -89,7 +89,7 @@ sap.ui.define([
             },
 
             onGravar:function(){
-              
+
                 //Limpar mensagens antigas
                 sap.ui.getCore().getMessageManager().removeAllMessages();
 
@@ -106,7 +106,7 @@ sap.ui.define([
 
                 //FORMA 1 de Criaçãocom  método oData
                 oModel.create("/Z270CADPRODUTOSSet", dados, {
-                    success: function(oDados, response){      
+                    success: function(oDados, response){
                             //var lv_message = JSON.parse(response.headers["sap-message"]);
                             //this.getView().setBusy(false);
                         var lv_message = JSON.parse(response.headers["sap-message"]);

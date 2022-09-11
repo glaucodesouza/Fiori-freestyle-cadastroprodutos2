@@ -5,10 +5,10 @@
 	xmlns:f="sap.ui.layout.form"
 	xmlns:core="sap.ui.core">
 	<Page
- 	title="Criar Novo Produto"
- 	showNavButton="true"
- 	navButtonPress=".onNavBack"
- 	floatingFooter="true">
+        title="Criar Novo Produto"
+        showNavButton="true"
+        navButtonPress=".onNavBack"
+        floatingFooter="true">
         <f:SimpleForm
             editable="true"
             layout="ResponsiveGridLayout"
