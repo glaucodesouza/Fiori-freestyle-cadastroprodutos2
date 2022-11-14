@@ -8,8 +8,7 @@
         id="page"
         headerPinnable="false"
         toggleHeaderOnTitleClick="false"
-        showFooter="{= ${messagez>/}.length > 0 }"
-        >
+        showFooter="{= ${messagez>/}.length > 0 }">
 
         <semantic:titleHeading>
             <Title
@@ -62,23 +61,23 @@
 
                 <columns>
                     <Column id="codigoColumn">
-                        <Text text="Código" id="codigoColumnLabel" />
+                      <Text text="Código" id="codigoColumnLabel" />
                     </Column>
                     <Column id="descricaoColumn" hAlign="Left">
-                        <Text text="Produto" id="descricaoColumnLabel"/>
+                      <Text text="Produto" id="descricaoColumnLabel"/>
                     </Column>
                     <Column id="kwmengColumn" hAlign="End">
-                        <Text text="Quantidade" id="kwmengColumnLabel"/>
+                      <Text text="Quantidade" id="kwmengColumnLabel"/>
                     </Column>
                     <Column id="netprColumn" hAlign="End">
                         <Text text="Preço Líquido" id="netprColumnLabel"/>
                     </Column>
                     <Column hAlign="End">
-						<Text text="Aprovar Venda" />
-					</Column>
-                    <Column hAlign="End">
-						<Text text="Deletar" />
-					</Column>
+                      <Text text="Aprovar Venda" />
+                    </Column>
+                        <Column hAlign="End">
+                      <Text text="Deletar" />
+                    </Column>
                 </columns>
 
                 <items>
@@ -91,12 +90,12 @@
                             <ObjectNumber number="{
                                     path: 'Kwmeng',
                                     formatter: '.formatter.Decimal'
-                                }"
+                                }" 
                                 unit="{Meins}" />
                             <ObjectNumber number="{
                                     path: 'Netpr',
                                     formatter: '.formatter.currencyUnit'
-                                }"
+                                }" 
                                 unit="{Waerk}" />
                             <Button icon="{= ${Aprovado} === true ? 'sap-icon://accept' : 'sap-icon://approve'}" press="onAprovarProduto" />
                             <Button icon="sap-icon://delete"    press="onDeletar" />
@@ -104,7 +103,7 @@
                     </ColumnListItem>
                 </items>
             </Table>
-        </semantic:content>
+        </semantic:content> 
 
 		<semantic:footerCustomActions>
 			<Button 
