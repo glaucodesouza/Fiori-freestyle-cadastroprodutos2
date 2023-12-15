@@ -32,7 +32,62 @@ sap.ui.define([
         /* =========================================================== */
         /* event handlers                                              */
         /* =========================================================== */
+        /**
+         * Binds the view to the object path.
+         * @function
+         * @param {sap.ui.base.Event} oEvent pattern match event in route 'object'
+         * @private
+         */
+        _onObjectMatched : function (oEvent) {
+            var sObjectId =  oEvent.getParameter("arguments").objectId;
+            this._bindView("/Z270CADPRODUTOSSet" + sObjectId);
+        },
 
+        /**
+         * Binds the view to the object path.
+         * @function
+         * @param {string} sObjectPath path to the object to be bound
+         * @private
+         */
+        _bindView : function (sObjectPath) {
+            var oViewModel = this.getModel("objectView");
+
+            this.getView().bindElement({
+                path: sObjectPath,
+                events: {
+                    change: this._onBindingChange.bind(this),
+                    dataRequested: function () {
+                        oViewModel.setProperty("/busy", true);
+                    },
+                    dataReceived: function () {
+                        oViewModel.setProperty("/busy", false);
+                    }
+                }
+            });
+        },
+
+        _onBindingChange : function () {
+            var oView = this.getView(),
+                oViewModel = this.getModel("objectView"),
+                oElementBinding = oView.getElementBinding();
+
+            // No data for the binding
+            if (!oElementBinding.getBoundContext()) {
+                this.getRouter().getTargets().display("objectNotFound");
+                return;
+            }
+
+            var oResourceBundle = this.getResourceBundle(),
+                oObject = oView.getBindingContext().getObject(),
+                sObjectId = oObject.Codigo,
+                sObjectName = oObject.Z270CADPRODUTOSSet;
+
+                oViewModel.setProperty("/busy", false);
+                oViewModel.setProperty("/shareSendEmailSubject",
+                    oResourceBundle.getText("shareSendEmailObjectSubject", [sObjectId]));
+                oViewModel.setProperty("/shareSendEmailMessage",
+                    oResourceBundle.getText("shareSendEmailObjectMessage", [sObjectName, sObjectId, location.href]));
+        },
 
         /**
          * Event handler  for navigating back.
@@ -95,82 +150,18 @@ sap.ui.define([
             });
         },
 
-		onCancelar: function (oEvent) {
+	onCancelar: function (oEvent) {
 
-			var m = this.getView().getModel();
-   
-			if (!m.hasPendingChanges()){
-				MessageToast.show("Sem mudanças para cancelar.");
-			 	return;
-			}
-   
-			m.resetChanges();
-		},
+		var m = this.getView().getModel();
 
+		if (!m.hasPendingChanges()){
+			MessageToast.show("Sem mudanças para cancelar.");
+			return;
+		}
 
-        
+		m.resetChanges();
+	}
 
-
-        /* =========================================================== */
-        /* internal methods                                            */
-        /* =========================================================== */
-
-        /**
-         * Binds the view to the object path.
-         * @function
-         * @param {sap.ui.base.Event} oEvent pattern match event in route 'object'
-         * @private
-         */
-        _onObjectMatched : function (oEvent) {
-            var sObjectId =  oEvent.getParameter("arguments").objectId;
-            this._bindView("/Z270CADPRODUTOSSet" + sObjectId);
-        },
-
-        /**
-         * Binds the view to the object path.
-         * @function
-         * @param {string} sObjectPath path to the object to be bound
-         * @private
-         */
-        _bindView : function (sObjectPath) {
-            var oViewModel = this.getModel("objectView");
-
-            this.getView().bindElement({
-                path: sObjectPath,
-                events: {
-                    change: this._onBindingChange.bind(this),
-                    dataRequested: function () {
-                        oViewModel.setProperty("/busy", true);
-                    },
-                    dataReceived: function () {
-                        oViewModel.setProperty("/busy", false);
-                    }
-                }
-            });
-        },
-
-        _onBindingChange : function () {
-            var oView = this.getView(),
-                oViewModel = this.getModel("objectView"),
-                oElementBinding = oView.getElementBinding();
-
-            // No data for the binding
-            if (!oElementBinding.getBoundContext()) {
-                this.getRouter().getTargets().display("objectNotFound");
-                return;
-            }
-
-            var oResourceBundle = this.getResourceBundle(),
-                oObject = oView.getBindingContext().getObject(),
-                sObjectId = oObject.Codigo,
-                sObjectName = oObject.Z270CADPRODUTOSSet;
-
-                oViewModel.setProperty("/busy", false);
-                oViewModel.setProperty("/shareSendEmailSubject",
-                    oResourceBundle.getText("shareSendEmailObjectSubject", [sObjectId]));
-                oViewModel.setProperty("/shareSendEmailMessage",
-                    oResourceBundle.getText("shareSendEmailObjectMessage", [sObjectName, sObjectId, location.href]));
-        }
     });
 
 });
